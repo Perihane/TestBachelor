@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "navigation-euwl",
+  "private_key_id": "4572887d6858972c2468e70cac05587e106680dc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC1JNRblYi9LO60\nPMS6+LyI9GZwPn3cpOsykJ/ge4wIKUHynzlj0NScrRyNvuI0Tr+yuyoQhF3JwiqT\ni9Ur5XRAAFjtDlLfe/i7uX7bfkDqXCBGwCg+J7z12usxMBuvWx3y01NGRHVBkYla\nmrcTnGklA4gSV/7RNKQqTIUgNrlaMP/44GgnOpxrAl8HZQi6kR3IsVm0H0JGguTg\nn3NlT8oXfUjDqBuXkYEPG4+FUnXXyxGeMNkGz99A2Rtx14/bQblUq9dAZ+ysgkTf\nPLD7skHGmOGNgp6WNGBiG1QUAcy5S27CySO3D/IRb23euBaVRfjEmXL9IW6yQ5b2\nQITgUMFLAgMBAAECggEADcMNiyOyLsUiIXlYbOgG0tTWj4J/52p0H/RS4SghvGD+\nDKPCJW4xKPIR8EbnQpgVAkwr5vNXeMOSnoEKIfqduVsNZn0nGKl/fSubkqtl3ShA\nn39rz0UPmxIVujfwcoMWpGMfuX/r9J5M9CA69nd0mYZKKTKcPmKkcj48AvWFYW+k\ncr/CkIejptWvHcr9EdCcGvpSvA/6P0wARIyAHK9QTF9e36yvrpJ/M7lX/pN6X9/a\nCgevMOxVeDOaCvAznZ0C4w6Lt36/N1Q3fBJQ8M0r3M5orZh6QJ+fvf8fThKbE/5D\nSg1TNMGCbFTccTYBXBQo5q4GJ8w/clp3IFhC1OrmUQKBgQD79/WD73QOKE9B6/Da\nVLvuhsNPPSDHjz4VlISOB6vJhrZBvHK5zsRnHvMUCBJl7rGoQr/rHniZ1N8wTDsp\ndQusiLNvMUSy/XJgW+x5buv4cWcty3ys8NrGsiGijrJeaT2/Ht7rS3espShKod6N\n4dJF/xxv/2iSbWEPC8kLOQ1SIwKBgQC4CsdY0HhyD2uzECMNz2f7McNhY60swVVj\nWNEUgTLWKdwYZ4iA04m05PkKOVtd1siXEnHX6/blwrYWnfaOGhVS34md47f8i98O\nm5eHwLLrf/VQoLKbQwyPeaK7yz2U8lsnyH3Sgn1R7NrDtAJHCdr+dsY8iOJkVg/1\nPGdfeTViuQKBgGVqNg12cZXJL61u07Bs7n9hCnd4ORtZUjnJX1jzSXeBmxX2TY7v\n5ClFUb08SntwiV0aELkHuK7h+TstU5qqG5rEIsScZfRNAp46IYH23U9QBaFvB61r\n/AKBa/xLxwss/MdSG5NE+tQoXYE8iaE9xS6bMcz6VhKpp6kwqyizO+NVAoGAS3iI\nFQCwU73FIZH9ff1Om7DleTuB2XeSx4G1g54TtcVGr29Nh963esnm4m1w7UNV0LXM\nn4nxHnlBaHbwk4dYtTpb2bZ3TYYiO4BMnGvGM1Kuy5iKhabyMKfltvL6VuknvmG2\nTywZrg3eDCD2SiFdf7o/QrWzeQfd1Wgmz/0JimkCgYAyQ8eoftFPlqBOu/qa8WLT\nu+jm8rJJh4dtjnmnjQ4pf77Wu9BTcwFmvd6/UFQ7NkrJoO9Dos0edQwb9D5E/858\niYq64IIIRMJnIe2AQl8Kx4sM71zHK2YZx5YEkswTdy0Bxbg1VQZAOFT0dAN7Kbgv\nLRZfzT5WLadRykJHlkZX9Q==\n-----END PRIVATE KEY-----\n",
+  "client_email": "appointment-scheduler@navigation-euwl.iam.gserviceaccount.com",
+  "client_id": "106544342333125433774",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/appointment-scheduler%40navigation-euwl.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
