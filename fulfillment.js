@@ -11,8 +11,13 @@ const auth = new google.auth.GoogleAuth({
   const calendar = google.calendar({ version: 'v3', auth });
   
  process.env.DEBUG = 'dialogflow:*'; 
- app.get('/', (req, res) => {
-  res.send('Appointment Scheduler!'); // Replace with your desired response
+//  app.get('/', (req, res) => {
+//   res.send('Appointment Scheduler!'); // Replace with your desired response
+// });
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
   const timeZone = 'Africa/Cairo';
 app.post('/', express.json(), (req, res) => {
