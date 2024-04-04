@@ -285,7 +285,7 @@ function getCalendarEvents(startDate, endDate) {
 //   console.log('Server is running on port 80');
 // });
 var listener = app.listen(process.env.PORT,process.env.IP,function(){
-  console.log("server has started");
+ // console.log("server has started");
   console.log('listening on port '+ listener.address().port);
 });
 
