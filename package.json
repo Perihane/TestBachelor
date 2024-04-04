@@ -1,8 +1,9 @@
 {
   "name": "testbachelor",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "fulfillment.js",
   "scripts": {
+    "start": "node fulfillment.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
