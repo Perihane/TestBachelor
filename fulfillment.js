@@ -220,47 +220,44 @@ function getMyAppointments(agent) {
   function cancelAppointment(agent) {
     const id = agent.parameters.gucid;
     return new Promise((resolve, reject) => {
-      calendar.events.list({
-        auth: auth,
-        calendarId: calendarId,
-        timeMin: (new Date()).toISOString(), // Start from current time
-        singleEvents: true,
-        orderBy: 'startTime',
-        q:  id 
-      }, (err, response) => {
-        if (err) {
-          agent.add('Error retrieving event: ' + err);
-          reject(err);
-        } else {
-          const events = response.data.items;
-          if (events.length === 0){
-            agent.add(`You have no appointments to cancel`);
-            resolve();
-          }
-          else{
-            const firstEvent = events[0];
-            calendar.events.delete({
-              auth: auth,
-              calendarId: calendarId,
-              eventId: firstEvent.id
-            }, (error, response) => {
-              if (error) {
-                agent.add('Error deleting event: ' + error);
-                reject(error);
-              } else {
-                const deletedEventDate = new Date(firstEvent.start.dateTime).toLocaleDateString();
-                agent.add('Appointment Cancelled Successfully for: ' + id+' on ' +deletedEventDate);
-                resolve();
-              }
-            });
-          }
-             
-          
-        }
-      });
+        calendar.events.list({
+            auth: auth,
+            calendarId: calendarId,
+            timeMin: (new Date()).toISOString(), // Start from current time
+            singleEvents: true,
+            orderBy: 'startTime',
+            q:  id 
+        }, (err, response) => {
+            if (err) {
+                agent.add('Error retrieving event: ' + err);
+                reject(err);
+            } else {
+                const events = response.data.items;
+                if (events.length === 0) {
+                    agent.add(`You have no appointments to cancel`);
+                    resolve(); // Resolve here since there are no appointments to cancel
+                } else {
+                    const firstEvent = events[0];
+                    calendar.events.delete({
+                        auth: auth,
+                        calendarId: calendarId,
+                        eventId: firstEvent.id
+                    }, (error, response) => {
+                        if (error) {
+                            agent.add('Error deleting event: ' + error);
+                            reject(error);
+                        } else {
+                            const deletedEventDate = new Date(firstEvent.start.dateTime).toLocaleDateString();
+                            agent.add('Appointment Cancelled Successfully for: ' + id+' on ' +deletedEventDate);
+                            resolve(); // Resolve here after sending the response to the user
+                        }
+                    });
+                }
+            }
+        });
     });
+}
 
-  }
   
 function getCalendarEvents(startDate, endDate) {
    return new Promise((resolve, reject) => {
