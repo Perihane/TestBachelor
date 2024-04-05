@@ -15,7 +15,6 @@ const auth = new google.auth.GoogleAuth({
 //  app.get('/', (req, res) => {
 //   res.send('Appointment Scheduler!'); // Replace with your desired response
 // });
-app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
