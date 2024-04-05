@@ -66,7 +66,7 @@ dateTimeEnd.setHours(endHour, endMinute);
        return;
    }
    console.log(dateTimeEnd.getHours());
-   if ( startHour +2 < 10|| dateTimeEnd.getHours() > 19) {
+   if ( startHour +2 < 10|| dateTimeEnd.getHours() + 2 > 19 || (dateTimeEnd.getHours() + 2 === 19 && dateTimeEnd.getMinutes()!=0)) {
        console.log(dateTimeEnd.getHours());
        console.log(startHour);
        agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
