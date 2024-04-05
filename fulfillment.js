@@ -25,7 +25,8 @@ app.get('/', (req, res) => {
 app.post('/', express.json(), (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
   function welcome(agent){
-    agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, I'm here to help you schedule your appointment :) Please Provide your Name, GUC ID and GUC email.")
+    agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :)")
+    agent.add("If you already have an appointment, and would like to cancel or modify, please say so")
   }
 
   function setInfo(agent) {
