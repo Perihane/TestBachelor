@@ -206,7 +206,7 @@ function getMyAppointments(agent) {
  );
                 return `${ startTimeString} - ${endTimeString}`+`\n`;
             });
-            agent.add(`You (${id}) have an appointment on:\n${formattedEvents.join('and on ')}`);
+            agent.add(`You (${id}) have an appointment on \n${formattedEvents.join('and on ')}`);
         }
     })
     .catch(error => {
@@ -214,6 +214,7 @@ function getMyAppointments(agent) {
         agent.add("Sorry, there was an error fetching the calendar events. Please try again later.");
     });
   }
+
   function cancelAppointment(agent) {
     const id = agent.parameters.gucid;
     return new Promise((resolve, reject) => {
