@@ -15,11 +15,13 @@ const auth = new google.auth.GoogleAuth({
 //  app.get('/', (req, res) => {
 //   res.send('Appointment Scheduler!'); // Replace with your desired response
 // });
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
   const timeZone = 'Africa/Cairo';
 app.post('/', express.json(), (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
