@@ -35,7 +35,7 @@ app.post('/', express.json(), (req, res) => {
     const name = agent.parameters.Name.name;
    const id = agent.parameters.ID;
   const  mail = agent.parameters.email;
- agent.add(`Hello, ${name}! When do you want to see Dr. Ayman? Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please provide a date, time, and duration (15 or 30 minutes).`);
+ agent.add(`Hello, ${name}! When do you want to see Dr. Ayman? Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please provide a date, time (include am/pm), and duration (15 or 30 minutes).`);
 
 }
   
@@ -147,7 +147,7 @@ function showAvailableSlots(agent) {
    return getCalendarEvents(startDate, endDate)
        .then(events => {
            if (events.length === 0) {
-               agent.add("There are no events scheduled within the next 10 days.");
+               agent.add("There are no appointments scheduled within the next 10 days.");
            } else {
                const formattedEvents = events.map(event => {
                    const startDateTime = new Date(event.start.dateTime);
