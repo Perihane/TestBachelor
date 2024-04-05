@@ -7,16 +7,26 @@
     <title>Appointment Scheduler</title>
     <style>
         /* Style to make the iframe fill the entire page */
-        html, body, iframe {
-            margin: 0;
-            padding: 0;
-            width: 50%;
-            height: 50%;
-            border: none; /* Remove border */
-            --df-messenger-font-size: 25px; /* Set desired font size */
+        html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background-color: #f0f0f0; /* Optional: Set background color */
+}
+
+iframe {
+    border: none; /* Remove iframe border */
+    --df-messenger-font-size: 25px; /* Set desired font size */
     --df-messenger-font-color: #333; /* Text color */
     --df-messenger-font-family: Arial, sans-serif; /* Font family */
-        }
+    /* Adjust width and height as needed */
+    width: 350px;
+    height: 430px;
+}
+
         .df-messenger-titlebar {
     background-color: #007bff; /* Title bar background color */
     padding: 10px; /* Padding around the title bar */
