@@ -226,7 +226,6 @@ function getMyAppointments(agent) {
     const id = agent.parameters.gucid;
     let name
     let mail
-    return new Promise((resolve, reject) => {
       calendar.events.list({
           auth: auth,
           calendarId: calendarId,
@@ -268,7 +267,7 @@ function getMyAppointments(agent) {
               }
           }
       });
-  });
+  
   const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));  
   const durationInMinutes = parseInt(agent.parameters.Duration);
   const startHour = dateTimeStart.getHours();
