@@ -250,7 +250,7 @@ function getMyAppointments(agent) {
                 console.log("ELSE22")
                   const firstEvent = events[0];
                   name = firstEvent.summary.split("'s Appointment")[0];
-                  mail = description.split(', mail: ')[1];
+                  mail = firstEvent.description.split(', mail: ')[1];
                   calendar.events.delete({
                       auth: auth,
                       calendarId: calendarId,
