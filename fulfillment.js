@@ -69,11 +69,40 @@ if (endMinute >= 60) {
        agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
        return;
    }
-    return createCalendarEvent(dateTimeStart, dateTimeEnd,name,id,mail).then(() => {
-      agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
-    }).catch(() => {
-      agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
-  }
+    // return createCalendarEvent(dateTimeStart, dateTimeEnd,name,id,mail).then(() => {
+    //   agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+    // }).catch(() => {
+    //   agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
+    calendar.events.list({
+      auth: auth,
+      calendarId: calendarId,
+      timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
+      timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+      singleEvents: true,
+      orderBy: 'startTime',
+      q: id // Assuming ID is used to identify the user's appointments
+  }, (err, calendarResponse) => {
+      if (err) {
+          console.error('Error retrieving events:', err);
+          agent.add("Sorry, there was an error checking for existing appointments. Please try again later.");
+          return;
+      }
+
+      const existingAppointments = calendarResponse.data.items;
+      if (existingAppointments.some(event => event.description && event.description.includes(id))) {
+          agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+      } else {
+          // Proceed with creating the appointment
+          createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+              .then(() => {
+                  agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+              })
+              .catch(() => {
+                  agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+              });
+      }
+  });
+}
 
 function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
  console.log (name, id,mail)
@@ -223,7 +252,6 @@ function getMyAppointments(agent) {
     });
 }
 function modifyAppointment(agent) {
-  console.log("HNEA");
   const id = agent.parameters.gucid;
 
   return new Promise((resolve, reject) => {
