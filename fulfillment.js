@@ -76,7 +76,8 @@ if (endMinute >= 60) {
   }
 
 function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
- // console.log (name, id,mail)
+ console.log (name, id,mail)
+ console.log (dateTimeStart, dateTimeEnd)
   return new Promise((resolve, reject) => {
     calendar.events.list({
       auth: auth, // List events for time period
