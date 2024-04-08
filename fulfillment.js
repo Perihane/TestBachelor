@@ -239,12 +239,13 @@ function getMyAppointments(agent) {
               agent.add('Error retrieving event: ' + err);
               reject(err);
           } else {
+            console.log("ELSE11")
               const events = response.data.items;
               if (events.length === 0) {
                   agent.add(`You have no appointments to modify`);
                   resolve(); // Resolve here since there are no appointments to cancel
               } else {
-                console.log("ELSE")
+                console.log("ELSE22")
                   const firstEvent = events[0];
                   name = firstEvent.summary.split("'s Appointment")[0];
                   mail = description.split(', mail: ')[1];
