@@ -261,7 +261,6 @@ function modifyAppointment(agent) {
                           agent.add('Error modifying event: ' + error);
                           reject(error);
                       } else {
-                          // Proceed with creating the modified appointment
                           const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
                           const durationInMinutes = parseInt(agent.parameters.Duration);
                           const startHour = dateTimeStart.getHours();
@@ -292,8 +291,7 @@ function modifyAppointment(agent) {
                               resolve();
                               return;
                           }
-
-                          // Create the modified appointment
+                          console.log(dateTimeStart, dateTimeEnd, name, id, mail)
                           createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
                               .then(() => {
                                   agent.add(`Ok, your appointment is modified, instead of ${deletedEventDate}, it is now on ${appointmentTimeString}. You have ${durationInMinutes} minutes!`);
