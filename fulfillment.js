@@ -266,6 +266,7 @@ function modifyAppointment(agent) {
                           const startHour = dateTimeStart.getHours();
                           const startMinute = dateTimeStart.getMinutes();
                           let endHour = startHour;
+                          console.log("DURATION: " + durationInMinutes)
                           let endMinute = startMinute + durationInMinutes;
 
                           if (endMinute >= 60) {
