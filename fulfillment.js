@@ -38,11 +38,6 @@ app.post('/', express.json(), (req, res) => {
  agent.add(`Hello, ${name}! When do you want to see Dr. Ayman? Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please provide a date, time (include am/pm), and duration (15 or 30 minutes).`);
 
 }
-
-function checkTomakeAppointment (agent) {
-  showAvailableSlots(agent);
-  makeAppointment (agent);
-}
   
   function makeAppointment (agent) {
    console.log("appointment")
@@ -420,7 +415,7 @@ function getCalendarEvents(startDate, endDate) {
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Personal Info', setInfo);
-  intentMap.set('Schedule Appointment', checkTomakeAppointment);
+  intentMap.set('Schedule Appointment', makeAppointment);
   intentMap.set('Wrong day', makeAppointment);
   intentMap.set('Wrong time', makeAppointment);
   intentMap.set('Show Available Slots', showAvailableSlots);
