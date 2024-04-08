@@ -237,6 +237,7 @@ function getMyAppointments(agent) {
           q:  id 
       }, (err, response) => {
           if (err) {
+            console.log("HNE1A")
              console.log('Error retrieving event: ' + err);
               reject(err);
           } else {
