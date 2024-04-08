@@ -224,6 +224,7 @@ function getMyAppointments(agent) {
 }
 
   function modifyAppointment (agent){
+    console.log("HNEA")
     const id = agent.parameters.gucid;
     let name
     let mail
