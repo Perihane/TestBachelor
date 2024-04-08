@@ -236,7 +236,7 @@ function getMyAppointments(agent) {
           q:  id 
       }, (err, response) => {
           if (err) {
-              agent.add('Error retrieving event: ' + err);
+             console.log('Error retrieving event: ' + err);
               reject(err);
           } else {
             console.log("ELSE11")
