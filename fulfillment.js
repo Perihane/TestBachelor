@@ -292,7 +292,7 @@ function modifyAppointment(agent) {
                               resolve();
                               return;
                           }
-                          console.log(dateTimeStart, dateTimeEnd, name, id, mail)
+                          console.log(deletedEventDate +"    " +appointmentTimeString)
                           createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
                               .then(() => {
                                   agent.add(`Ok, your appointment is modified, instead of ${deletedEventDate}, it is now on ${appointmentTimeString}. You have ${durationInMinutes} minutes!`);
