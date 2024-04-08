@@ -244,6 +244,7 @@ function getMyAppointments(agent) {
                   agent.add(`You have no appointments to modify`);
                   resolve(); // Resolve here since there are no appointments to cancel
               } else {
+                console.log("ELSE")
                   const firstEvent = events[0];
                   name = firstEvent.summary.split("'s Appointment")[0];
                   mail = description.split(', mail: ')[1];
