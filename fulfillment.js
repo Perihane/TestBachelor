@@ -40,10 +40,35 @@ app.post('/', express.json(), (req, res) => {
 }
   
   function makeAppointment (agent) {
+    let name= null
+    let id = null
+    let mail=null
+    const context = agent.context.get('appointment_info');
+    if (context && context.parameters && context.parameters.Name ) {
+      name= context.parameters.Name.name;
+      id= context.parameters.ID
+      mail=context.parameters.email
+  }
+     
+      if (!name) {
+        const context2 = agent.context.get('schedule');
+    if (context2 && context2.parameters && context2.parameters.Name) {
+      name= context2.parameters.Name.name;
+      id= context2.parameters.ID
+      mail=context2.parameters.email
+  }
+      }
+      
+      if (!name) {
+          // If the Name parameter is not found in either context, prompt the user
+          agent.add("I'm sorry, I couldn't find your name. Please provide your name.");
+          return;
+      }
+  
    console.log("appointment")
-   const name = agent.parameters.Name.name;
-   const id = agent.parameters.ID;
-   const  mail = agent.parameters.email;
+  //  const name = agent.parameters.Name.name;
+  //  const id = agent.parameters.ID;
+  //  const  mail = agent.parameters.email;
    const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));  
    const durationInMinutes = parseInt(agent.parameters.Duration);
    const startHour = dateTimeStart.getHours();
