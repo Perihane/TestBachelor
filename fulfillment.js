@@ -80,7 +80,7 @@ if (endMinute >= 60) {
       timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
       singleEvents: true,
       orderBy: 'startTime',
-      q: id // Assuming ID is used to identify the user's appointments
+      q: id 
   }, (err, calendarResponse) => {
       if (err) {
           console.error('Error retrieving events:', err);
@@ -92,7 +92,6 @@ if (endMinute >= 60) {
       if (existingAppointments.some(event => event.description && event.description.includes(id))) {
           agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
       } else {
-          // Proceed with creating the appointment
           createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
               .then(() => {
                   agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
