@@ -54,9 +54,10 @@ app.post('/', express.json(), (req, res) => {
      
       if (!name) {
         const context2 = agent.context.get('schedule');
-        console.log('xonsole 2')
+        
         console.log(context2)
     if (context2 && context2.parameters && context2.parameters.Name) {
+      console.log('xonsole 2')
       name= context2.parameters.Name.name;
       id= context2.parameters.ID
       mail=context2.parameters.email
