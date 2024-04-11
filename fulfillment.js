@@ -46,7 +46,7 @@ app.post('/', express.json(), (req, res) => {
     let mail=null
     const context = agent.context.get('appointment_info');
     if (context && context.parameters && context.parameters.Name ) {
-      console.log('xonsole 2')
+      console.log('xonsole 1')
       name= context.parameters.Name.name;
       id= context.parameters.ID
       mail=context.parameters.email
