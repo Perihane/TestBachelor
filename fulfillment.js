@@ -53,7 +53,7 @@ app.post('/', express.json(), (req, res) => {
   }
      
       if (!name) {
-        const context2 = agent.context.get('schedule');
+        const context2 = agent.context.get('available_appointments');
         console.log('xonsole 2')
         console.log(context2)
     if (context2 && context2.parameters && context2.parameters.Name) {
