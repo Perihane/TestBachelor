@@ -56,7 +56,7 @@ app.post('/', express.json(), (req, res) => {
         const context2 = agent.context.get('schedule');
         
         console.log(context2)
-    if (context2 && context2.parameters && context2.parameters.Name) {
+    if (context2 && context2.parameters) {
       console.log('xonsole 2')
       name= context2.parameters.Name.name;
       id= context2.parameters.ID
