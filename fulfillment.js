@@ -40,6 +40,7 @@ app.post('/', express.json(), (req, res) => {
 }
   
   function makeAppointment (agent) {
+    console.log("appointment")
     let name= null
     let id = null
     let mail=null
