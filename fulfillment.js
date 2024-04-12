@@ -479,6 +479,7 @@ function getCalendarEvents(startDate, endDate) {
   intentMap.set('Get Appointment', getMyAppointments);
   intentMap.set('Cancel Appointment', cancelAppointment );
   intentMap.set('Modify Appointment',modifyAppointment)
+  intentMap.set('inquire',showAvailableSlots)
   agent.handleRequest(intentMap);
 
   
