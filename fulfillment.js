@@ -69,35 +69,69 @@ function makeAppointment(agent) {
         agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
         return;
     }
-    calendar.events.list({
-        auth: auth,
-        calendarId: calendarId,
-        timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
-        timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
-        singleEvents: true,
-        orderBy: 'startTime',
-        q: id
-    }, (err, calendarResponse) => {
-        if (err) {
+    const p=new Promise((resolve, reject) => {
+        calendar.events.list({
+          auth: auth,
+          calendarId: calendarId,
+          timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
+          timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+          singleEvents: true,
+          orderBy: 'startTime',
+          q: id
+        }, (err, calendarResponse) => {
+          if (err) {
             console.error('Error retrieving events:', err);
-            agent.add("Sorry, there was an error checking for existing appointments. Please try again later.");
-            return;
-        }
+            reject(err);
+          } else {
+            const events = calendarResponse.data.items;
+            resolve(events);
+          }
+        });
+      });
+      return p.then(events => {
+          if (events.length === 0) {
+            return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+            .then(() => {
+                agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+            })
+            .catch(() => {
+                agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+            });
+            }
+            else {
+                agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+            }
+        });
+    }
+    // calendar.events.list({
+    //     auth: auth,
+    //     calendarId: calendarId,
+    //     timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
+    //     timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+    //     singleEvents: true,
+    //     orderBy: 'startTime',
+    //     q: id
+    // }, (err, calendarResponse) => {
+    //     if (err) {
+    //         console.error('Error retrieving events:', err);
+    //         agent.add("Sorry, there was an error checking for existing appointments. Please try again later.");
+    //         return;
+    //     }
 
-        const existingAppointments = calendarResponse.data.items;
-        if (existingAppointments.length === 0) {
-           return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
-                .then(() => {
-                    agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
-                })
-                .catch(() => {
-                    agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
-                });
-        } else {
-            agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
-        }
-    });
-}
+    //     const existingAppointments = calendarResponse.data.items;
+//         if (existingAppointments.length === 0) {
+//            return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+//                 .then(() => {
+//                     agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+//                 })
+//                 .catch(() => {
+//                     agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+//                 });
+//         } else {
+//             agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+//         }
+//     });
+// }
 
 
 function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
