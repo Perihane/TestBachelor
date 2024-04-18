@@ -40,40 +40,10 @@ app.post('/', express.json(), (req, res) => {
 }
   
   function makeAppointment (agent) {
-    console.log("appointment")
-    let name= null
-    let id = null
-    let mail=null
-    const context = agent.context.get('appointment_info');
-    if (context && context.parameters && context.parameters.Name ) {
-      console.log('xonsole 1')
-      name= context.parameters.Name.name;
-      id= context.parameters.ID
-      mail=context.parameters.email
-  }
-     
-      if (!name) {
-        const context2 = agent.context.get('available_appointments');
-        
-        console.log(context2)
-    if (context2 && context2.parameters) {
-      console.log('xonsole 2')
-      name= context2.parameters.Name.name;
-      id= context2.parameters.ID
-      mail=context2.parameters.email
-  }
-      }
-      
-      if (!name) {
-          // If the Name parameter is not found in either context, prompt the user
-          agent.add("I'm sorry, I couldn't find your name. Please provide your name.");
-          return;
-      }
-  
    console.log("appointment")
-  //  const name = agent.parameters.Name.name;
-  //  const id = agent.parameters.ID;
-  //  const  mail = agent.parameters.email;
+   const name = agent.parameters.Name.name;
+   const id = agent.parameters.ID;
+   const  mail = agent.parameters.email;
    const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));  
    const durationInMinutes = parseInt(agent.parameters.Duration);
    const startHour = dateTimeStart.getHours();
@@ -99,39 +69,44 @@ if (endMinute >= 60) {
        agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
        return;
    }
+   return createCalendarEvent(dateTimeStart, dateTimeEnd,name,id,mail).then(() => {
+    agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+  }).catch(() => {
+    agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
+}
     // return createCalendarEvent(dateTimeStart, dateTimeEnd,name,id,mail).then(() => {
     //   agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
     // }).catch(() => {
     //   agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
-    calendar.events.list({
-      auth: auth,
-      calendarId: calendarId,
-      timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
-      timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
-      singleEvents: true,
-      orderBy: 'startTime',
-      q: id 
-  }, (err, calendarResponse) => {
-      if (err) {
-          console.error('Error retrieving events:', err);
-          agent.add("Sorry, there was an error checking for existing appointments. Please try again later.");
-          return;
-      }
+//     calendar.events.list({
+//       auth: auth,
+//       calendarId: calendarId,
+//       timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
+//       timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+//       singleEvents: true,
+//       orderBy: 'startTime',
+//       q: id 
+//   }, (err, calendarResponse) => {
+//       if (err) {
+//           console.error('Error retrieving events:', err);
+//           agent.add("Sorry, there was an error checking for existing appointments. Please try again later.");
+//           return;
+//       }
 
-      const existingAppointments = calendarResponse.data.items;
-      if (existingAppointments.some(event => event.description && event.description.includes(id))) {
-          agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
-      } else {
-          createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
-              .then(() => {
-                  agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
-              })
-              .catch(() => {
-                  agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
-              });
-      }
-  });
-}
+//       const existingAppointments = calendarResponse.data.items;
+//       if (existingAppointments.some(event => event.description && event.description.includes(id))) {
+//           agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+//       } else {
+//           createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+//               .then(() => {
+//                   agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+//               })
+//               .catch(() => {
+//                   agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+//               });
+//       }
+//   });
+// }
 
 function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
  console.log (name, id,mail)
@@ -473,7 +448,7 @@ function getCalendarEvents(startDate, endDate) {
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Personal Info', setInfo);
   intentMap.set('Schedule Appointment', makeAppointment);
-  //intentMap.set('Sched Slot',makeAppointment );
+  intentMap.set('Sched Slot',makeAppointment );
   intentMap.set('Wrong day', makeAppointment);
   intentMap.set('Wrong time', makeAppointment);
   intentMap.set('Show Available Slots', showAvailableSlots);
