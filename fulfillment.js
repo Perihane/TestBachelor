@@ -74,10 +74,10 @@ if (endMinute >= 60) {
 //   }).catch(() => {
 //     agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
 // }
-    return createCalendarEvent(dateTimeStart, dateTimeEnd,name,id,mail).then(() => {
-      agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
-    }).catch(() => {
-      agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
+    // return createCalendarEvent(dateTimeStart, dateTimeEnd,name,id,mail).then(() => {
+    //   agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+    // }).catch(() => {
+    //   agent.add(`I'm sorry, Requested time: ${dateTimeStart.toLocaleString('en-US', {hour: 'numeric', minute:'numeric', timeZone: timeZone }) } conflicts with another appointment. Please enter another time`)});
     calendar.events.list({
       auth: auth,
       calendarId: calendarId,
