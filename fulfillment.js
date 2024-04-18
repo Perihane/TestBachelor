@@ -94,17 +94,29 @@ if (endMinute >= 60) {
       }
 
       const existingAppointments = calendarResponse.data.items;
-      if (existingAppointments.some(event => event.description && event.description.includes(id))) {
-          agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
-      } else {
-          return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
-              .then(() => {
-                  agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
-              })
-              .catch(() => {
-                  agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
-              });
+      if (existingAppointments.length===0){
+        return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+                  .then(() => {
+                      agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+                  })
+                  .catch(() => {
+                      agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+                  });
       }
+      else{
+        agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+      }
+    //   if (existingAppointments.some(event => event.description && event.description.includes(id))) {
+    //       agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+    //   } else {
+    //       return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+    //           .then(() => {
+    //               agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+    //           })
+    //           .catch(() => {
+    //               agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+    //           });
+    //   }
   });
 }
 
