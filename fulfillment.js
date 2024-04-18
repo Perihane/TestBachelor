@@ -99,7 +99,7 @@ function makeAppointment(agent) {
             });
             }
             else {
-                agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
+                agent.add("You already have an appointment scheduled for this day. Each student can only have one appointment per week. You can either choose another day or modify your existing appointment");
             }
         });
     }
