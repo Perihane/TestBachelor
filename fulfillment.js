@@ -97,7 +97,7 @@ if (endMinute >= 60) {
       if (existingAppointments.some(event => event.description && event.description.includes(id))) {
           agent.add("You already have an appointment scheduled for this day. You cannot make another appointment.");
       } else {
-          createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+          return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
               .then(() => {
                   agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
               })
