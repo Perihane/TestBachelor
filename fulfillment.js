@@ -86,7 +86,7 @@ function makeAppointment(agent) {
 
         const existingAppointments = calendarResponse.data.items;
         if (existingAppointments.length === 0) {
-            createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+           return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
                 .then(() => {
                     agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
                 })
