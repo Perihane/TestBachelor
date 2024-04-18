@@ -473,7 +473,7 @@ function getCalendarEvents(startDate, endDate) {
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Personal Info', setInfo);
   intentMap.set('Schedule Appointment', makeAppointment);
-  intentMap.set('Sched Slot',makeAppointment );
+  //intentMap.set('Sched Slot',makeAppointment );
   intentMap.set('Wrong day', makeAppointment);
   intentMap.set('Wrong time', makeAppointment);
   intentMap.set('Show Available Slots', showAvailableSlots);
