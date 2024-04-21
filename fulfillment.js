@@ -61,29 +61,63 @@ function makeAppointment(agent) {
     const agentParameters = agent.parameters;
     const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0]);
     const durationInMinutes = parseInt(agent.parameters.Duration);
-    const startHour = dateTimeStart.getHours();
-    const startMinute = dateTimeStart.getMinutes();
-    let endHour = startHour;
-    let endMinute = startMinute + durationInMinutes;
+    // const startHour = dateTimeStart.getHours();
+    // const startMinute = dateTimeStart.getMinutes();
+    const startHour = dateTimeStart.hour;
+    const startMinute = dateTimeStart.minute;
 
-    if (endMinute >= 60) {
-        endHour += Math.floor(endMinute / 60);
-        endMinute %= 60;
-    }
-    const dateTimeEnd = new Date(dateTimeStart);
-    dateTimeEnd.setHours(endHour, endMinute);
-    const appointmentTimeString = dateTimeStart.toLocaleString(
-        'en-US',
-        { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
-    );
-    if (dateTimeStart.getDay() !== 0) {
-        agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
-        return;
-    }
-    if (startHour + 2 < 10 || dateTimeEnd.getHours() + 2 > 19 || (dateTimeEnd.getHours() + 2 === 19 && dateTimeEnd.getMinutes() != 0)) {
-        agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
-        return;
-    }
+    // let endHour = startHour;
+    // let endMinute = startMinute + durationInMinutes;
+    
+
+    // if (endMinute >= 60) {
+    //     endHour += Math.floor(endMinute / 60);
+    //     endMinute %= 60;
+    // }
+    // const dateTimeEnd = new Date(dateTimeStart);
+    // dateTimeEnd.setHours(endHour, endMinute);
+    // const appointmentTimeString = dateTimeStart.toLocaleString(
+    //     'en-US',
+    //     { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
+    // );
+    // if (dateTimeStart.getDay() !== 0) {
+    //     agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
+    //     return;
+    // }
+    // if (startHour + 2 < 10 || dateTimeEnd.getHours() + 2 > 19 || (dateTimeEnd.getHours() + 2 === 19 && dateTimeEnd.getMinutes() != 0)) {
+    //     agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
+    //     return;
+    // }
+    const endHour = startHour + Math.floor(durationInMinutes / 60);
+const endMinute = (startMinute + durationInMinutes) % 60;
+
+// Create a Luxon DateTime for the end time
+const dateTimeEnd = dateTimeStart.plus({ hours: endHour, minutes: endMinute });
+
+// Format the appointment time string
+const appointmentTimeString = dateTimeStart.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZone: timeZone
+});
+
+// Check if the appointment is on a Sunday
+if (dateTimeStart.weekday !== 7) {
+    agent.add("Appointments can only be scheduled on Sundays. Please choose another date and time.");
+    return;
+}
+
+// Check if the appointment time is within the allowed range (10 am to 7 pm)
+if (startHour < 10 || dateTimeEnd.hour > 19 || (dateTimeEnd.hour === 19 && dateTimeEnd.minute !== 0)) {
+    agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please choose another time.");
+    return;
+}
+
+// Proceed with further logic or responses as needed
+// ...
+
     const p=new Promise((resolve, reject) => {
         calendar.events.list({
           auth: auth,
