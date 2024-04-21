@@ -166,7 +166,7 @@ function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
   
 }
 function toTimeZone(date, timeZone) {
-    const options = { timeZone, ...otherOptions };
+    const options = { timeZone };
     return new Date(date.toLocaleString('en-US', options));
 }
 
