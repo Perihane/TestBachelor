@@ -59,7 +59,8 @@ function makeAppointment(agent) {
    // const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
     //const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
     const timeZone = 'Africa/Cairo'; // Set your desired time zone
-const dateTimeStart = parseDateTime(agent.parameters.date, agent.parameters.time, timeZone);
+    const agentParameters = agent.parameters;
+    const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0], timeZone);
     const durationInMinutes = parseInt(agent.parameters.Duration);
     const startHour = dateTimeStart.getHours();
     const startMinute = dateTimeStart.getMinutes();
