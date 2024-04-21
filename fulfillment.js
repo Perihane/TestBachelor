@@ -122,8 +122,10 @@ if (startHour < 10 || dateTimeEnd.hour > 19 || (dateTimeEnd.hour === 19 && dateT
         calendar.events.list({
           auth: auth,
           calendarId: calendarId,
-          timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
-          timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+          timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart.date).toISOString(),
+          timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart.date + 1).toISOString(),
+        //   timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.month, dateTimeStart.getDate()).toISOString(),
+        //   timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
           singleEvents: true,
           orderBy: 'startTime',
           q: id
