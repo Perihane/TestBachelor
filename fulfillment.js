@@ -44,7 +44,7 @@ function makeAppointment(agent) {
     const name = agent.parameters.Name.name;
     const id = agent.parameters.ID;
     const mail = agent.parameters.email;
-    const timeZone = 'GMT+2';
+    const timeZone = 'Africa/Cairo';
     const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
     // const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
     const durationInMinutes = parseInt(agent.parameters.Duration);
