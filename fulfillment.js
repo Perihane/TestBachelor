@@ -124,7 +124,7 @@ function makeAppointment(agent) {
           calendarId: calendarId,
         //   timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart).toISOString(),
         //   timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart + 1).toISOString(),
-          timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.month, dateTimeStart.getDate()).toISOString(),
+          timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
           timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
           singleEvents: true,
           orderBy: 'startTime',
