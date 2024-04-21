@@ -10,8 +10,8 @@ const auth = new google.auth.GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/calendar'], 
   });
   const calendar = google.calendar({ version: 'v3', auth });
-  const { DateTime, Settings } = require('luxon');
-  Settings.defaultZone = 'Africa/Cairo';
+//   const { DateTime, Settings } = require('luxon');
+//   Settings.defaultZone = 'Africa/Cairo';
  process.env.DEBUG = 'dialogflow:*'; 
 //  app.get('/', (req, res) => {
 //   res.send('Appointment Scheduler!'); // Replace with your desired response
@@ -30,17 +30,17 @@ app.post('/', express.json(), (req, res) => {
     agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!")
     
   }
-  function parseDateTime(date, time) {
-    const [year, month, day] = date.split('-').map(Number);
-    const [hours, minutes] = time.split(':').map(Number);
-    return DateTime.fromObject({
-        year,
-        month,
-        day,
-        hour: hours,
-        minute: minutes
-    });
-}
+//   function parseDateTime(date, time) {
+//     const [year, month, day] = date.split('-').map(Number);
+//     const [hours, minutes] = time.split(':').map(Number);
+//     return DateTime.fromObject({
+//         year,
+//         month,
+//         day,
+//         hour: hours,
+//         minute: minutes
+//     });
+// }
   function setInfo(agent) {
     console.log("info")
     const name = agent.parameters.Name.name;
@@ -55,77 +55,77 @@ function makeAppointment(agent) {
     const name = agent.parameters.Name.name;
     const id = agent.parameters.ID;
     const mail = agent.parameters.email;
-   // const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
-    //const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
-    const timeZone = 'Africa/Cairo'; // Set your desired time zone
-    const agentParameters = agent.parameters;
-    const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0]);
+   //const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
+    const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
+   // const timeZone = 'Africa/Cairo'; // Set your desired time zone
+    //const agentParameters = agent.parameters;
+    //const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0]);
     const durationInMinutes = parseInt(agent.parameters.Duration);
-    // const startHour = dateTimeStart.getHours();
-    // const startMinute = dateTimeStart.getMinutes();
-    const startHour = dateTimeStart.hour;
-    const startMinute = dateTimeStart.minute;
+    const startHour = dateTimeStart.getHours();
+    const startMinute = dateTimeStart.getMinutes();
+    // const startHour = dateTimeStart.hour;
+    // const startMinute = dateTimeStart.minute;
 
-    // let endHour = startHour;
-    // let endMinute = startMinute + durationInMinutes;
+    let endHour = startHour;
+    let endMinute = startMinute + durationInMinutes;
     
 
-    // if (endMinute >= 60) {
-    //     endHour += Math.floor(endMinute / 60);
-    //     endMinute %= 60;
-    // }
-    // const dateTimeEnd = new Date(dateTimeStart);
-    // dateTimeEnd.setHours(endHour, endMinute);
-    // const appointmentTimeString = dateTimeStart.toLocaleString(
-    //     'en-US',
-    //     { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
-    // );
-    // if (dateTimeStart.getDay() !== 0) {
-    //     agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
-    //     return;
-    // }
-    // if (startHour + 2 < 10 || dateTimeEnd.getHours() + 2 > 19 || (dateTimeEnd.getHours() + 2 === 19 && dateTimeEnd.getMinutes() != 0)) {
-    //     agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
-    //     return;
-    // }
-    const endHour = startHour + Math.floor(durationInMinutes / 60);
-const endMinute = (startMinute + durationInMinutes) % 60;
+    if (endMinute >= 60) {
+        endHour += Math.floor(endMinute / 60);
+        endMinute %= 60;
+    }
+    const dateTimeEnd = new Date(dateTimeStart);
+    dateTimeEnd.setHours(endHour, endMinute);
+    const appointmentTimeString = dateTimeStart.toLocaleString(
+        'en-US',
+        { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
+    );
+    if (dateTimeStart.getDay() !== 0) {
+        agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
+        return;
+    }
+    if (startHour + 2 < 10 || dateTimeEnd.getHours() + 2 > 19 || (dateTimeEnd.getHours() + 2 === 19 && dateTimeEnd.getMinutes() != 0)) {
+        agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
+        return;
+    }
+//     const endHour = startHour + Math.floor(durationInMinutes / 60);
+// const endMinute = (startMinute + durationInMinutes) % 60;
 
-// Create a Luxon DateTime for the end time
-const dateTimeEnd = dateTimeStart.plus({ hours: endHour, minutes: endMinute });
+// // Create a Luxon DateTime for the end time
+// const dateTimeEnd = dateTimeStart.plus({ hours: endHour, minutes: endMinute });
 
-// Format the appointment time string
-const appointmentTimeString = dateTimeStart.toLocaleString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    timeZone: timeZone
-});
+// // Format the appointment time string
+// const appointmentTimeString = dateTimeStart.toLocaleString('en-US', {
+//     month: 'long',
+//     day: 'numeric',
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     timeZone: timeZone
+// });
 
-// Check if the appointment is on a Sunday
-if (dateTimeStart.weekday !== 7) {
-    agent.add("Appointments can only be scheduled on Sundays. Please choose another date and time.");
-    return;
-}
+// // Check if the appointment is on a Sunday
+// if (dateTimeStart.weekday !== 7) {
+//     agent.add("Appointments can only be scheduled on Sundays. Please choose another date and time.");
+//     return;
+// }
 
-// Check if the appointment time is within the allowed range (10 am to 7 pm)
-if (startHour < 10 || dateTimeEnd.hour > 19 || (dateTimeEnd.hour === 19 && dateTimeEnd.minute !== 0)) {
-    agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please choose another time.");
-    return;
-}
+// // Check if the appointment time is within the allowed range (10 am to 7 pm)
+// if (startHour < 10 || dateTimeEnd.hour > 19 || (dateTimeEnd.hour === 19 && dateTimeEnd.minute !== 0)) {
+//     agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please choose another time.");
+//     return;
+// }
 
-// Proceed with further logic or responses as needed
-// ...
+// // Proceed with further logic or responses as needed
+// // ...
 
     const p=new Promise((resolve, reject) => {
         calendar.events.list({
           auth: auth,
           calendarId: calendarId,
-          timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart).toISOString(),
-          timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart + 1).toISOString(),
-        //   timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.month, dateTimeStart.getDate()).toISOString(),
-        //   timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+        //   timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart).toISOString(),
+        //   timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart + 1).toISOString(),
+          timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.month, dateTimeStart.getDate()).toISOString(),
+          timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
           singleEvents: true,
           orderBy: 'startTime',
           q: id
