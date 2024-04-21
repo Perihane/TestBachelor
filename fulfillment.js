@@ -10,7 +10,8 @@ const auth = new google.auth.GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/calendar'], 
   });
   const calendar = google.calendar({ version: 'v3', auth });
-  const { DateTime } = require('luxon');
+  const { DateTime, Settings } = require('luxon');
+  Settings.defaultZone = 'Africa/Cairo';
  process.env.DEBUG = 'dialogflow:*'; 
 //  app.get('/', (req, res) => {
 //   res.send('Appointment Scheduler!'); // Replace with your desired response
@@ -37,8 +38,7 @@ app.post('/', express.json(), (req, res) => {
         month,
         day,
         hour: hours,
-        minute: minutes,
-        zone:'Africa/Cairo'
+        minute: minutes
     });
 }
   function setInfo(agent) {
@@ -51,17 +51,6 @@ app.post('/', express.json(), (req, res) => {
 }
   
 function makeAppointment(agent) {
-    const dateTime = DateTime.fromObject({
-        year: 2024,
-        month: 4,
-        day: 8,
-        hour: 12,
-        minute: 0,
-        zone: 'Africa/Cairo' // Specify the time zone here
-      });
-      
-      console.log(dateTime.toISO()); 
-    
     console.log("appointment");
     const name = agent.parameters.Name.name;
     const id = agent.parameters.ID;
