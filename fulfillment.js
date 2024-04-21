@@ -1,5 +1,4 @@
 const express = require('express');
-const { DateTime } = require('luxon');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const app = express();
 const path = require('path');
@@ -11,7 +10,7 @@ const auth = new google.auth.GoogleAuth({
     scopes: ['https://www.googleapis.com/auth/calendar'], 
   });
   const calendar = google.calendar({ version: 'v3', auth });
-  
+  const { DateTime } = require('luxon');
  process.env.DEBUG = 'dialogflow:*'; 
 //  app.get('/', (req, res) => {
 //   res.send('Appointment Scheduler!'); // Replace with your desired response
@@ -30,7 +29,7 @@ app.post('/', express.json(), (req, res) => {
     agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!")
     
   }
-  function parseDateTime(date, time, timeZone) {
+  function parseDateTime(date, time) {
     const [year, month, day] = date.split('-').map(Number);
     const [hours, minutes] = time.split(':').map(Number);
     return DateTime.fromObject({
@@ -39,7 +38,7 @@ app.post('/', express.json(), (req, res) => {
         day,
         hour: hours,
         minute: minutes,
-        zone: timeZone
+        zone:'Africa/Cairo'
     });
 }
   function setInfo(agent) {
@@ -60,7 +59,7 @@ function makeAppointment(agent) {
     //const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
     const timeZone = 'Africa/Cairo'; // Set your desired time zone
     const agentParameters = agent.parameters;
-    const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0], timeZone);
+    const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0]);
     const durationInMinutes = parseInt(agent.parameters.Duration);
     const startHour = dateTimeStart.getHours();
     const startMinute = dateTimeStart.getMinutes();
@@ -118,6 +117,7 @@ function makeAppointment(agent) {
                 agent.add("You already have an appointment scheduled for this day. Each student can only have one appointment per week. You can either choose another day or modify your existing appointment");
             }
         });
+        
     }
     // calendar.events.list({
     //     auth: auth,
