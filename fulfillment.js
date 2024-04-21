@@ -44,9 +44,8 @@ function makeAppointment(agent) {
     const name = agent.parameters.Name.name;
     const id = agent.parameters.ID;
     const mail = agent.parameters.email;
-    const timeZone = 'Africa/Cairo';
-    const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
-    // const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
+   // const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
+    const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
     const durationInMinutes = parseInt(agent.parameters.Duration);
     const startHour = dateTimeStart.getHours();
     const startMinute = dateTimeStart.getMinutes();
@@ -165,10 +164,10 @@ function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
   });
   
 }
-function toTimeZone(date, timeZone) {
-    const options = { timeZone };
-    return new Date(date.toLocaleString('en-US', options));
-}
+// function toTimeZone(date, timeZone) {
+//     const options = { timeZone };
+//     return new Date(date.toLocaleString('en-US', options));
+// }
 
 function showAvailableSlots(agent) {
    const startDate = new Date();
