@@ -51,6 +51,17 @@ app.post('/', express.json(), (req, res) => {
 }
   
 function makeAppointment(agent) {
+    const dateTime = DateTime.fromObject({
+        year: 2024,
+        month: 4,
+        day: 8,
+        hour: 12,
+        minute: 0,
+        zone: 'Africa/Cairo' // Specify the time zone here
+      });
+      
+      console.log(dateTime.toISO()); 
+    
     console.log("appointment");
     const name = agent.parameters.Name.name;
     const id = agent.parameters.ID;
@@ -117,17 +128,7 @@ function makeAppointment(agent) {
                 agent.add("You already have an appointment scheduled for this day. Each student can only have one appointment per week. You can either choose another day or modify your existing appointment");
             }
         });
-        const dateTime = DateTime.fromObject({
-            year: 2024,
-            month: 4,
-            day: 8,
-            hour: 12,
-            minute: 0,
-            zone: 'Africa/Cairo' // Specify the time zone here
-          });
-          
-          console.log(dateTime.toISO()); 
-        
+  
     }
     // calendar.events.list({
     //     auth: auth,
