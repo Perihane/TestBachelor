@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-  const timeZone = 'Europe/Berlin';
+  const timeZone = 'Africa/Cairo';
 app.post('/', express.json(), (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
 
