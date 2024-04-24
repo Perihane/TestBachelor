@@ -21,15 +21,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-  const timeZone = 'Africa/Cairo';
 app.post('/', express.json(), (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
 
   function welcome(agent){
     agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!")
-    
   }
+
+});
+  const timeZone = 'Africa/Cairo';
+app.post('/', express.json(), (req, res) => {
+  const agent = new WebhookClient({ request: req, response: res });
+
+  // function welcome(agent){
+  //   agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!")
+    
+  // }
 //   function parseDateTime(date, time) {
 //     const [year, month, day] = date.split('-').map(Number);
 //     const [hours, minutes] = time.split(':').map(Number);
