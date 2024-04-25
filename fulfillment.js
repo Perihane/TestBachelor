@@ -23,20 +23,6 @@ const { v4: uuidv4 } = require('uuid');
 
 const sessionId = uuidv4();
 
-async function getAccessToken() {
-  // Create JWT client with service account credentials
-  const jwtClient = new JWT({
-      email: serviceAccount.client_email,
-      key: serviceAccount.private_key,
-      scopes: ['https://www.googleapis.com/auth/dialogflow']
-  });
-
-  // Get access token
-  const accessToken = await jwtClient.getAccessToken();
-  return accessToken;
-}
-
-const accessToken= getAccessToken();
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -565,10 +551,23 @@ function getCalendarEvents(startDate, endDate) {
 // app.listen(80, () => {
 //   console.log('Server is running on port 80');
 // });
+async function getAccessToken() {
+  // Create JWT client with service account credentials
+  const jwtClient = new JWT({
+      email: serviceAccount.client_email,
+      key: serviceAccount.private_key,
+      scopes: ['https://www.googleapis.com/auth/dialogflow']
+  });
+
+  // Get access token
+  const { token } = await jwtClient.getAccessToken();
+  return token;
+}
 async function sendInitialMessage() {
   try {
+    const accessToken = await getAccessToken();
     // Make a POST request to Dialogflow's detectIntent API
-    const response = await axios.post('https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/' + sessionId + ':detectIntent', {
+    const response = await axios.post(`https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/${sessionId}:detectIntent`, {
       queryInput: {
         text: {
           text: "Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!",
