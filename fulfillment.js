@@ -69,9 +69,8 @@ app.get('/', (req, res) => {
         },
       });
       
-      
-      // Handle the response here
-      console.log(response.data);
+    
+      console.log("HIIIIIIIIII");
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
