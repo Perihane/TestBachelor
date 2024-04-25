@@ -581,7 +581,7 @@ async function sendInitialMessage(agent) {
     const response = await axios.post(`https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/${sessionId}:detectIntent`, {
       queryInput: {
         text: {
-          text: "Hello! I'm ScheduleBuddy, Dr. Ayman's assistant. To schedule an appointment, provide your Name, GUC ID, and GUC email. If you have an appointment and want to modify or cancel it, let me know. to know when is your appointment or when dr Ayman is free, just ask!",
+          text: "hi",
           languageCode: 'en-US',
         },
       },
