@@ -578,7 +578,7 @@ async function sendInitialMessage() {
   try {
     const accessToken = await getAccessToken();
     // Make a POST request to Dialogflow's detectIntent API
-    const response = await axios.post(`https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/${sessionId}:detectIntent`, {
+    const response = await axios.post(`https://dialogflow.googleapis.com/v2/projects/navigation-euwl/sessions/${sessionId}:detectIntent`, {
       queryInput: {
         text: {
           text: "Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!",
