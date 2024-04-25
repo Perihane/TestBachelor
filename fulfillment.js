@@ -24,10 +24,11 @@ const { v4: uuidv4 } = require('uuid');
 
 const sessionId = uuidv4();
 console.log('Generated sessionId:', sessionId);
+sendInitialMessage();
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
+sendInitialMessage();
   const timeZone = 'Africa/Cairo';
   async function getAccessToken() {
     // Create JWT client with service account credentials
@@ -617,7 +618,6 @@ function getCalendarEvents(startDate, endDate) {
 var listener = app.listen(process.env.PORT,process.env.IP,function(){
  // console.log("server has started");
   console.log('listening on port '+ listener.address().port);
-  sendInitialMessage();
 });
 
 
