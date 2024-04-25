@@ -574,7 +574,7 @@ async function getAccessToken() {
     throw new Error('Unexpected access token response format');
   }
 }
-async function sendInitialMessage(agent) {
+async function sendInitialMessage() {
   try {
     const accessToken = await getAccessToken();
     // Make a POST request to Dialogflow's detectIntent API
@@ -591,7 +591,7 @@ async function sendInitialMessage(agent) {
         'Content-Type': 'application/json',
       },
     });
-    agent.add("HI")
+    
     
     // Handle the response here
     console.log(response.data);
