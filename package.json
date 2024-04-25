@@ -15,6 +15,7 @@
     "dialogflow": "^1.2.0",
     "dialogflow-fulfillment": "^0.6.1",
     "express": "^4.19.2",
+    "google-auth-library": "^9.9.0",
     "googleapis": "^134.0.0",
     "luxon": "^3.4.4"
   }
