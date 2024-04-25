@@ -2,6 +2,7 @@ const express = require('express');
 const { WebhookClient } = require('dialogflow-fulfillment');
 const app = express();
 const path = require('path');
+const { JWT } = require('google-auth-library');
 const { google } = require('googleapis');
 const calendarId = "70622acc72477def0756b799db98b4b6d8b9578e5b3e398746636dc2550ae0b7@group.calendar.google.com"
 const serviceAccount = require('./navigation-euwl-4572887d6858.json');
@@ -18,41 +19,23 @@ const auth = new google.auth.GoogleAuth({
 // });
 app.use(express.static(path.join(__dirname, 'public')));
 const { v4: uuidv4 } = require('uuid');
+
 const sessionId = uuidv4();
+const jwtClient = new JWT({
+  email: serviceAccount.client_email,
+  key: serviceAccount.private_key,
+  scopes: ['https://www.googleapis.com/auth/dialogflow']
+});
+
+// Get access token
+const accessToken = await jwtClient.getAccessToken();
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-
-
   const timeZone = 'Africa/Cairo';
-  async function sendInitialMessage() {
-    try {
-      // Make a POST request to Dialogflow's detectIntent API
-      const response = await axios.post('https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/'+sessionId+ ':detectIntent', {
-        queryInput: {
-          text: {
-            text: '',
-            languageCode: 'en-US',
-          },
-        },
-      }, {
-        headers: {
-          'Authorization': 'Bearer YOUR_DIALOGFLOW_ACCESS_TOKEN',
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      // Handle the response here
-      console.log(response.data);
-    } catch (error) {
-      console.error('Error sending initial message to Dialogflow:', error);
-    }
-  }
-  
-  // Send initial message when the server starts
-  sendInitialMessage();
-  
+app.post('/', express.json(), (req, res) => {
+  const agent = new WebhookClient({ request: req, response: res });
 
   function welcome(agent){
     agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!")
@@ -571,13 +554,35 @@ function getCalendarEvents(startDate, endDate) {
 
   
 });
-app.post('/', express.json(), (req, res) => {
-  const agent = new WebhookClient({ request: req, response: res });
-  agent.handleRequest(intentMap);
-});
 // app.listen(80, () => {
 //   console.log('Server is running on port 80');
 // });
+async function sendInitialMessage() {
+  try {
+    // Make a POST request to Dialogflow's detectIntent API
+    const response = await axios.post('https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/' + sessionId + ':detectIntent', {
+      queryInput: {
+        text: {
+          text: "Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask!",
+          languageCode: 'en-US',
+        },
+      },
+    }, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    // Handle the response here
+    console.log(response.data);
+  } catch (error) {
+    console.error('Error sending initial message to Dialogflow:', error);
+  }
+}
+
+// Send initial message when the server starts
+sendInitialMessage();
 var listener = app.listen(process.env.PORT,process.env.IP,function(){
  // console.log("server has started");
   console.log('listening on port '+ listener.address().port);
