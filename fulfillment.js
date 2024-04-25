@@ -18,11 +18,12 @@ const auth = new google.auth.GoogleAuth({
 //  app.get('/', (req, res) => {
 //   res.send('Appointment Scheduler!'); // Replace with your desired response
 // });
+
 app.use(express.static(path.join(__dirname, 'public')));
 const { v4: uuidv4 } = require('uuid');
 
 const sessionId = uuidv4();
-
+console.log('Generated sessionId:', sessionId);
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -553,6 +554,7 @@ function getCalendarEvents(startDate, endDate) {
 // });
 async function getAccessToken() {
   // Create JWT client with service account credentials
+  
   const jwtClient = new JWT({
       email: serviceAccount.client_email,
       key: serviceAccount.private_key,
@@ -560,8 +562,17 @@ async function getAccessToken() {
   });
 
   // Get access token
-  const { token } = await jwtClient.getAccessToken();
-  return token;
+  const accessTokenResponse = await jwtClient.getAccessToken();
+  
+  // Check if the response contains the expected property
+  if ('token' in accessTokenResponse) {
+    // Extract the token
+    const { token } = accessTokenResponse;
+    return token;
+  } else {
+    // Handle the case where the response format is unexpected
+    throw new Error('Unexpected access token response format');
+  }
 }
 async function sendInitialMessage() {
   try {
