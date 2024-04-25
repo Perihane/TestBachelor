@@ -617,6 +617,7 @@ function getCalendarEvents(startDate, endDate) {
 var listener = app.listen(process.env.PORT,process.env.IP,function(){
  // console.log("server has started");
   console.log('listening on port '+ listener.address().port);
+  sendInitialMessage();
 });
 
 
