@@ -21,14 +21,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 const { v4: uuidv4 } = require('uuid');
 
 const sessionId = uuidv4();
-const jwtClient = new JWT({
-  email: serviceAccount.client_email,
-  key: serviceAccount.private_key,
-  scopes: ['https://www.googleapis.com/auth/dialogflow']
-});
 
-// Get access token
-const accessToken = await jwtClient.getAccessToken();
+async function getAccessToken() {
+  // Create JWT client with service account credentials
+  const jwtClient = new JWT({
+      email: serviceAccount.client_email,
+      key: serviceAccount.private_key,
+      scopes: ['https://www.googleapis.com/auth/dialogflow']
+  });
+
+  // Get access token
+  const accessToken = await jwtClient.getAccessToken();
+  return accessToken;
+}
+
+const accessToken= getAccessToken();
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
