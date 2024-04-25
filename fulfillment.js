@@ -24,11 +24,9 @@ const { v4: uuidv4 } = require('uuid');
 
 const sessionId = uuidv4();
 console.log('Generated sessionId:', sessionId);
-sendInitialMessage();
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-sendInitialMessage();
   const timeZone = 'Africa/Cairo';
   async function getAccessToken() {
     // Create JWT client with service account credentials
@@ -69,8 +67,9 @@ sendInitialMessage();
           'Content-Type': 'application/json',
         },
       });
-      
-    
+      const fulfillmentText = response.data.queryResult.fulfillmentText;
+      const agent = new WebhookClient({ request: req, response: res });
+      agent.add(fulfillmentText)
       console.log("HIIIIIIIIII");
     } catch (error) {
       if (error.response) {
