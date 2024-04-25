@@ -9,7 +9,7 @@ const calendarId = "70622acc72477def0756b799db98b4b6d8b9578e5b3e398746636dc2550a
 const serviceAccount = require('./navigation-euwl-4572887d6858.json');
 const auth = new google.auth.GoogleAuth({
     credentials: serviceAccount,
-    scopes: ['https://www.googleapis.com/auth/calendar'], 
+    scopes: ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/dialogflow'], 
   });
   const calendar = google.calendar({ version: 'v3', auth });
 //   const { DateTime, Settings } = require('luxon');
@@ -595,7 +595,19 @@ async function sendInitialMessage() {
     // Handle the response here
     console.log(response.data);
   } catch (error) {
-    console.error('Error sending initial message to Dialogflow:', error);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response:', error.response.data);
+      console.error('Status code:', error.response.status);
+      console.error('Headers:', error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('No response received:', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Request setup error:', error.message);
+    }
   }
 }
 
