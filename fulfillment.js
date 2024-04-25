@@ -595,7 +595,7 @@ function getCalendarEvents(startDate, endDate) {
 
 
   let intentMap = new Map();
-  intentMap.set('Default Welcome Intent',sendInitialMessage);
+  intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Personal Info', setInfo);
   intentMap.set('Schedule Appointment', makeAppointment);
   intentMap.set('Sched Slot',makeAppointment );
