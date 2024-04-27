@@ -151,7 +151,7 @@ function makeAppointment(agent) {
         agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
         return;
     }
-    if (startHour + 2 < 10 || dateTimeEnd.getHours() + 2 > 19 || (dateTimeEnd.getHours() + 2 === 19 && dateTimeEnd.getMinutes() != 0)) {
+    if (startHour + 3 < 10 || dateTimeEnd.getHours() + 3 > 19 || (dateTimeEnd.getHours() + 3 === 19 && dateTimeEnd.getMinutes() != 0)) {
         agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
         return;
     }
