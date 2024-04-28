@@ -492,7 +492,7 @@ function modifyAppointment(agent) {
                       'en-US',
                       { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
                   );
-                    agent.add(`You have an appointment`);
+        
               
                   // calendar.events.delete({
                   //     auth: auth,
@@ -603,9 +603,9 @@ function getCalendarEvents(startDate, endDate) {
   intentMap.set('Show Available Slots', showAvailableSlots);
   intentMap.set('Get Appointment', getMyAppointments);
   intentMap.set('Cancel Appointment', cancelAppointment );
- // intentMap.set('Modify Appointment - custom',modifyAppointment)
+  intentMap.set('Modify Appointment - custom',modifyAppointment)
   intentMap.set('inquire',showAvailableSlots)
-  intentMap.set('Modify Appointment',modifyAppointment)
+  //intentMap.set('Modify Appointment',modifyAppointment)
 
   //intentMap.set('Modify Appointment - custom - custom',deleteAndadd)
   agent.handleRequest(intentMap);
