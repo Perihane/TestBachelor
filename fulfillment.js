@@ -354,11 +354,14 @@ console.log("HERE");
               console.log('Error retrieving event: ' + err);
               reject(err);
           } else {
+            console.log("HERE2")
               const events = response.data.items;
               if (events.length === 0) {
+                console.log("HERE3")
                   agent.add(`You have no appointments to modify`);
                   resolve(); // Resolve here since there are no appointments to modify
               } else {
+                console.log("HERE4")
                   const firstEvent = events[0];
                   const name = firstEvent.summary.split("'s Appointment")[0];
                   const mail = firstEvent.description.split(', mail: ')[1];
