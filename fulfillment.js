@@ -342,7 +342,6 @@ function modifyAppointment(agent) {
   const timeZone='Africa/Cairo';
   const id = agent.parameters.ID;
 console.log("HERE");
-  return new Promise((resolve, reject) => {
       calendar.events.list({
           auth: auth,
           calendarId: calendarId,
@@ -378,7 +377,7 @@ console.log("HERE");
               }
           }
       });
-  });
+  
 }
 function deleteAndadd(agent){
   const id = agent.parameters.ID;
