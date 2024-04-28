@@ -135,8 +135,7 @@ function makeAppointment(agent) {
 
     let endHour = startHour;
     let endMinute = startMinute + durationInMinutes;
-    
-
+    console.log('dur',durationInMinutes,'enhour',endHour,'endmin',endMinute,'startmin',startMinute);
     if (endMinute >= 60) {
         endHour += Math.floor(endMinute / 60);
         endMinute %= 60;
