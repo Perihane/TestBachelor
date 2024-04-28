@@ -493,7 +493,7 @@ function modifyAppointment(agent) {
                       { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
                   );
                   agent.add(`You have an appointment`);
-              
+                  resolve();
                   // calendar.events.delete({
                   //     auth: auth,
                   //     calendarId: calendarId,
