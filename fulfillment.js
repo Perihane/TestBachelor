@@ -371,8 +371,8 @@ console.log("HERE");
                       { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
                   );
                   console.log(name,mail,deletedEventDate)
-                  agent.add('You have an appointment on '+deletedEventDate+'. When do you want your new appointment to be? Please provide a date, time (include am/pm), and duration(15 or 30 minutes)');
-                
+                  // agent.add('You have an appointment on '+deletedEventDate+'. When do you want your new appointment to be? Please provide a date, time (include am/pm), and duration(15 or 30 minutes)');
+                agent.add("HI");
                   // calendar.events.delete({
                   //     auth: auth,
                   //     calendarId: calendarId,
