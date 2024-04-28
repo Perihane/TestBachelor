@@ -58,7 +58,7 @@ function makeAppointment(agent) {
     const mail = agent.parameters.email;
    //const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
     const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
-    dateTimeStart.setHours=dateTimeStart.getHours+1;
+    dateTimeStart.setHours(dateTimeStart.getHours+1);
     console.log(dateTimeStart)
     const timeZone = 'Africa/Cairo'; // Set your desired time zone
     //const agentParameters = agent.parameters;
