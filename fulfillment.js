@@ -339,6 +339,7 @@ function getMyAppointments(agent) {
     });
 }
 function modifyAppointment(agent) {
+  const timeZone='Africa/Cairo';
   const id = agent.parameters.ID;
 console.log("HERE");
   return new Promise((resolve, reject) => {
@@ -369,6 +370,7 @@ console.log("HERE");
                       'en-US',
                       { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
                   );
+                  console.log(name,mail,deletedEventDate)
                   agent.add('You have an appointment on '+deletedEventDate+'. When do you want your new appointment to be? Please provide a date, time (include am/pm), and duration(15 or 30 minutes)');
                 
                   // calendar.events.delete({
