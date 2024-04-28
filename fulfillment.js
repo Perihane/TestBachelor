@@ -20,76 +20,12 @@ const auth = new google.auth.GoogleAuth({
 // });
 
 app.use(express.static(path.join(__dirname, 'public')));
-const { v4: uuidv4 } = require('uuid');
-
-const sessionId = uuidv4();
-console.log('Generated sessionId:', sessionId);
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
   const timeZone = 'Africa/Cairo';
-  async function getAccessToken() {
-    // Create JWT client with service account credentials
-    
-    const jwtClient = new JWT({
-        email: serviceAccount.client_email,
-        key: serviceAccount.private_key,
-        scopes: ['https://www.googleapis.com/auth/dialogflow']
-    });
+ 
   
-    // Get access token
-    const accessTokenResponse = await jwtClient.getAccessToken();
-    
-    // Check if the response contains the expected property
-    if ('token' in accessTokenResponse) {
-      // Extract the token
-      const { token } = accessTokenResponse;
-      return token;
-    } else {
-      // Handle the case where the response format is unexpected
-      throw new Error('Unexpected access token response format');
-    }
-  }
-  async function sendInitialMessage() {
-    try {
-      const accessToken = await getAccessToken();
-      // Make a POST request to Dialogflow's detectIntent API
-      const response = await axios.post(`https://dialogflow.googleapis.com/v2/projects/navigation-euwl/agent/sessions/${sessionId}:detectIntent`, {
-        queryInput: {
-          text: {
-            text: "hi",
-            languageCode: 'en-US',
-          },
-        },
-      }, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      });
-      const fulfillmentText = response.data.queryResult.fulfillmentText;
-      const agent = new WebhookClient({ request: req, response: res });
-      agent.add(fulfillmentText)
-      console.log("HIIIIIIIIII");
-    } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error('Error response:', error.response.data);
-        console.error('Status code:', error.response.status);
-        console.error('Headers:', error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.error('No response received:', error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Request setup error:', error.message);
-      }
-    }
-  }
-  
-  // Send initial message when the server starts
-  sendInitialMessage();
 app.post('/', express.json(), (req, res) => {
   const agent = new WebhookClient({ request: req, response: res });
 
