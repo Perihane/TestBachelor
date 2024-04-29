@@ -154,6 +154,7 @@ function makeAppointment(agent) {
           'en-US',
           { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
       );
+      console.log(dateTimeStart.getDay());
       if (dateTimeStart.getDay() !== 0) {
           agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
           return;
