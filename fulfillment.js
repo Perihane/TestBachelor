@@ -45,7 +45,7 @@ app.post('/', express.json(), (req, res) => {
 // }
   function setInfo(agent) {
     console.log("info")
-    const name = agent.parameters.Name.name;
+    const name = agent.parameters.Name;
    const id = agent.parameters.ID;
   const  mail = agent.parameters.email;
  agent.add(`Hello, ${name}! When do you want to see Dr. Ayman? Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please provide a date, time (include am/pm), and duration (15 or 30 minutes).`);
@@ -54,7 +54,7 @@ app.post('/', express.json(), (req, res) => {
   
 function makeAppointment(agent) {
     console.log("appointment");
-    const name = agent.parameters.Name.name;
+    const name = agent.parameters.Name;
     const id = agent.parameters.ID;
     const mail = agent.parameters.email;
    //const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
