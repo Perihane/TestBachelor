@@ -243,7 +243,7 @@ function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
 function showAvailableSlots(agent) {
   const startDate = new Date();
   const endDate = new Date();
-  endDate.setDate(startDate.getDate() + 20); 
+  endDate.setDate(startDate.getDate() + 20);
 
   return getCalendarEvents(startDate, endDate)
       .then(events => {
@@ -278,6 +278,7 @@ function showAvailableSlots(agent) {
           agent.add("Sorry, there was an error fetching the calendar events. Please try again later.");
       });
 }
+
 
 
 function getMyAppointments(agent) {
