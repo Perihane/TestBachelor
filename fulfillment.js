@@ -265,12 +265,13 @@ function showAvailableSlots(agent) {
               });
 
               // Format events
-              const formattedEvents = Object.entries(eventsByDate).map(([date, slots]) => {
+              let formattedEvents = '';
+              Object.entries(eventsByDate).forEach(([date, slots]) => {
                   const slotsFormatted = slots.join(' // ');
-                  return `${date}: ${slotsFormatted}\n`;
+                  formattedEvents += `${date}: ${slotsFormatted}\n`;
               });
 
-              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n')}\n`);
+              agent.add(`Booked slots within the next 20 days:\n${formattedEvents}`);
           }
       })
       .catch(error => {
@@ -278,6 +279,7 @@ function showAvailableSlots(agent) {
           agent.add("Sorry, there was an error fetching the calendar events. Please try again later.");
       });
 }
+
 
 
 
