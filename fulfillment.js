@@ -313,7 +313,7 @@ function showAvailableSlots(agent) {
                   return `${dateKey}:\n${slots}`;
               });
 
-              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n\n')}`);
+              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n\n')}. Any other time is available ;)`);
           }
       })
       .catch(error => {
