@@ -310,10 +310,10 @@ function showAvailableSlots(agent) {
 
               const formattedEvents = Object.keys(groupedEvents).map(dateKey => {
                   const slots = groupedEvents[dateKey].join(' // ');
-                  return `${dateKey}: ${slots}`;
+                  return `${dateKey}:\n${slots}`;
               });
 
-              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n')}`);
+              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n\n')}`);
           }
       })
       .catch(error => {
