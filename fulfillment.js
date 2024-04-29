@@ -510,7 +510,7 @@ function getCalendarEvents(startDate, endDate) {
   intentMap.set('inquire',showAvailableSlots)
   //intentMap.set('Modify Appointment',modifyAppointment)
   intentMap.set('Modify Appointment - custom - custom',deleteAndadd)
-  intentMap.set('Modify Appointment - custom - custom - custom - custom', modifyfollowupAppointment)
+  intentMap.set('Modify Appointment - custom - custom - custom', modifyfollowupAppointment)
   agent.handleRequest(intentMap);
 
   
