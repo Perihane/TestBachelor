@@ -268,7 +268,8 @@ function showAvailableSlots(agent) {
               let formattedEvents = '';
               Object.entries(eventsByDate).forEach(([date, slots]) => {
                   const slotsFormatted = slots.join(' // ');
-                  formattedEvents += `${date}: ${slotsFormatted}`+'\n';
+                  formattedEvents += `${date}: ${slotsFormatted}
+                  `
               });
 
               agent.add(`Booked slots within the next 20 days:\n${formattedEvents}\n`);
