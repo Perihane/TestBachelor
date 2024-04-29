@@ -29,7 +29,7 @@ app.post('/', express.json(), (req, res) => {
   let modifiedname;
   let modifiedmail;
   function welcome(agent){
-    agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask! If you want to see all Dr Ayman's scheduled appointments for the next 10 days, ask me to show available slots")
+    agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when your appointment is scheduled, just ask! If you want to see all Dr Ayman's scheduled appointments for the next 20 days, ask me when can I book a slot")
     
   }
 //   function parseDateTime(date, time) {
@@ -239,37 +239,46 @@ function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
 //     return new Date(date.toLocaleString('en-US', options));
 // }
 
+// 
 function showAvailableSlots(agent) {
-   const startDate = new Date();
-   const endDate = new Date();
-   endDate.setDate(startDate.getDate() + 10);
+  const startDate = new Date();
+  const endDate = new Date();
+  endDate.setDate(startDate.getDate() + 20); 
 
-   return getCalendarEvents(startDate, endDate)
-       .then(events => {
-           if (events.length === 0) {
-               agent.add("There are no appointments scheduled within the next 10 days.");
-           } else {
-               const formattedEvents = events.map(event => {
-                   const startDateTime = new Date(event.start.dateTime);
-                   const endDateTime = new Date(event.end.dateTime);
-                   const startTimeString = startDateTime.toLocaleString(
-      'en-US',
-      { month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric', timeZone: timeZone }
-    );
-                 const endTimeString = endDateTime.toLocaleString(
-      'en-US',
-      { hour: 'numeric', minute: 'numeric', timeZone: timeZone }
-    );
-                   return `${ startTimeString} - ${endTimeString}`+`\n`;
-               });
-               agent.add(`Booked slots within the next 10 days:\n${formattedEvents.join('//')}`);
-           }
-       })
-       .catch(error => {
-           console.error("Error fetching calendar events:", error);
-           agent.add("Sorry, there was an error fetching the calendar events. Please try again later.");
-       });
+  return getCalendarEvents(startDate, endDate)
+      .then(events => {
+          if (events.length === 0) {
+              agent.add("There are no appointments scheduled within the next 20 days.");
+          } else {
+              // Group events by date
+              const eventsByDate = {};
+              events.forEach(event => {
+                  const startDateTime = new Date(event.start.dateTime);
+                  const dateString = startDateTime.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+                  if (!eventsByDate[dateString]) {
+                      eventsByDate[dateString] = [];
+                  }
+                  const startTimeString = startDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+                  const endDateTime = new Date(event.end.dateTime);
+                  const endTimeString = endDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric' });
+                  eventsByDate[dateString].push(`${startTimeString} - ${endTimeString}`);
+              });
+
+              // Format events
+              const formattedEvents = Object.entries(eventsByDate).map(([date, slots]) => {
+                  const slotsFormatted = slots.join(' // ');
+                  return `${date}: ${slotsFormatted}`;
+              });
+
+              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n')}`);
+          }
+      })
+      .catch(error => {
+          console.error("Error fetching calendar events:", error);
+          agent.add("Sorry, there was an error fetching the calendar events. Please try again later.");
+      });
 }
+
 
 function getMyAppointments(agent) {
     const id = agent.parameters.gucid;
