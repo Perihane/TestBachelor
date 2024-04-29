@@ -293,22 +293,27 @@ function showAvailableSlots(agent) {
   return getCalendarEvents(startDate, endDate)
       .then(events => {
           if (events.length === 0) {
-              agent.add("There are no appointments scheduled within the next 10 days.");
+              agent.add("There are no appointments scheduled within the next 20 days.");
           } else {
-              const formattedEvents = events.map(event => {
+              const groupedEvents = {};
+              events.forEach(event => {
                   const startDateTime = new Date(event.start.dateTime);
+                  const dateKey = startDateTime.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+                  if (!groupedEvents[dateKey]) {
+                      groupedEvents[dateKey] = [];
+                  }
+                  const startTimeString = startDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZone: timeZone });
                   const endDateTime = new Date(event.end.dateTime);
-                  const startTimeString = startDateTime.toLocaleString(
-     'en-US',
-     { month: 'long', day: 'numeric', hour: 'numeric',minute: 'numeric', timeZone: timeZone }
-   );
-                const endTimeString = endDateTime.toLocaleString(
-     'en-US',
-     { hour: 'numeric', minute: 'numeric', timeZone: timeZone }
-   );
-                  return `${ startTimeString} - ${endTimeString}`+`\n`;
+                  const endTimeString = endDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZone: timeZone });
+                  groupedEvents[dateKey].push(`${startTimeString} - ${endTimeString}`);
               });
-              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('//')}`);
+
+              const formattedEvents = Object.keys(groupedEvents).map(dateKey => {
+                  const slots = groupedEvents[dateKey].join(' // ');
+                  return `${dateKey}: ${slots}`;
+              });
+
+              agent.add(`Booked slots within the next 20 days:\n${formattedEvents.join('\n')}`);
           }
       })
       .catch(error => {
@@ -316,6 +321,7 @@ function showAvailableSlots(agent) {
           agent.add("Sorry, there was an error fetching the calendar events. Please try again later.");
       });
 }
+
 
 
 function getMyAppointments(agent) {
