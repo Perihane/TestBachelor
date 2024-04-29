@@ -62,7 +62,7 @@ function makeAppointment(agent) {
    
     const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
    // dateTimeStart.setHours(dateTimeStart.getHours+1);
-    dateTimeStart.setTime(date.getTime() - hours * 60 * 60 * 1000);
+    dateTimeStart.setTime(dateTimeStart.getTime() - hours * 60 * 60 * 1000);
     console.log(dateTimeStart);
     const timeZone = 'Africa/Cairo'; // Set your desired time zone
     //const agentParameters = agent.parameters;
