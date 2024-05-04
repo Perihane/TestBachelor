@@ -69,9 +69,17 @@ function setInfo(agent) {
   
 function makeAppointment(agent) {
     console.log("appointment");
-    const name = agent.parameters.Name;
+    const firstName = agent.parameters.Name;
+    const lastName = agent.parameters.LastName;
     const id = agent.parameters.ID;
     const mail = agent.parameters.email;
+
+    let fullName;
+    if (lastName) {
+        fullName = `${firstName} ${lastName}`;
+    } else {
+        fullName = firstName;
+    }
     const hours = 1;
    //const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
    
@@ -131,7 +139,7 @@ function makeAppointment(agent) {
       });
       return p.then(events => {
           if (events.length === 0) {
-            return createCalendarEvent(dateTimeStart, dateTimeEnd, name, id, mail)
+            return createCalendarEvent(dateTimeStart, dateTimeEnd, fullName, id, mail)
             .then(() => {
                 agent.add(`Ok, your appointment is on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
             })
