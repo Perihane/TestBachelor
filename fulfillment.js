@@ -446,52 +446,6 @@ function deleteAndadd(agent){
                       resolve();
                       return;
                   }
-                  const p=new Promise((resolve, reject) => {
-                          calendar.events.list({
-                            auth: auth,
-                            calendarId: calendarId,
-                          //   timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart).toISOString(),
-                          //   timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart + 1).toISOString(),
-                            timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
-                            timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
-                            singleEvents: true,
-                            orderBy: 'startTime',
-                            q: id
-                          }, (err, calendarResponse) => {
-                            if (err) {
-                              console.error('Error retrieving events:', err);
-                              reject(err);
-                            } else {
-                              const events = calendarResponse.data.items;
-                              resolve(events);
-                            }
-                          });
-                        });
-                        return p.then(events => {
-                            if (events.length === 0) {
-                              return createCalendarEvent(dateTimeStart, dateTimeEnd, modifiedname, id, modifiedmail)
-                              .then(() => {
-                                agent.add(`Ok, your appointment is modified, instead of ${deletedEventDate}, it is now on ${appointmentTimeString}. You have ${durationInMinutes} minutes!`);
-                                calendar.events.delete({
-                                  auth: auth,
-                                  calendarId: calendarId,
-                                  eventId: firstEvent.id
-                              }, (error, response) => {
-                                  if (error) {
-                                      agent.add('Error modifying event: ' + error);
-                                      reject(error);
-                                  } 
-                              });
-                                resolve();
-                              })
-                              .catch(() => {
-                                  agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
-                              });
-                              }
-                              else {
-                                  agent.add("You already have an appointment scheduled for this day. Each student can only have one appointment per week. You can either choose another day or modify your existing appointment");
-                              }
-                          });
                   console.log(deletedEventDate +"    " +appointmentTimeString)
                   createCalendarEvent(dateTimeStart, dateTimeEnd, modifiedname, id, modifiedmail)
                       .then(() => {
