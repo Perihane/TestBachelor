@@ -28,6 +28,8 @@ app.post('/', express.json(), (req, res) => {
   const timeZone = 'Africa/Cairo';
   let modifiedname;
   let modifiedmail;
+  let firstEvent;
+
   function welcome(agent){
     agent.add("Hello! I am ScheduleBuddy, Dr. Ayman's virtual assistant, if you wish to schedule an appointment, please provide me with your Name, GUC ID and GUC email :) \n If you already have an appointment, and would like to modify or cancel it, simply let me know. If you'd like to know when is your appointment, just ask! If you want to see all Dr Ayman's scheduled appointments for the next 20 days, ask me when can I book a slot? :)")
     
@@ -153,80 +155,80 @@ function makeAppointment(agent) {
         });
   
     }
-    function modifyfollowupAppointment(agent) {
-      const id = agent.parameters.ID;
-     //const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
-      const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
-      dateTimeStart.setTime(dateTimeStart.getTime() - 1 * 60 * 60 * 1000);
-      //dateTimeStart.setHours(dateTimeStart.getHours+1);
-      console.log(dateTimeStart)
-      const timeZone = 'Africa/Cairo'; // Set your desired time zone
-      //const agentParameters = agent.parameters;
-      //const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0]);
-      const durationInMinutes = parseInt(agent.parameters.Duration);
-      const startHour = dateTimeStart.getHours();
-      const startMinute = dateTimeStart.getMinutes();
-      // const startHour = dateTimeStart.hour;
-      // const startMinute = dateTimeStart.minute;
-      let endHour = startHour;
-      let endMinute = startMinute + durationInMinutes;
-      console.log('dur',durationInMinutes,'enhour',endHour,'endmin',endMinute,'startmin',startMinute);
-      if (endMinute >= 60) {
-          endHour += Math.floor(endMinute / 60);
-          endMinute %= 60;
-      }
-      const dateTimeEnd = new Date(dateTimeStart);
-      dateTimeEnd.setHours(endHour, endMinute);
-      const appointmentTimeString = dateTimeStart.toLocaleString(
-          'en-US',
-          { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
-      );
-      console.log(dateTimeStart.getDay());
-      if (dateTimeStart.getDay() !== 0) {
-          agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
-          return;
-      }
-      if (startHour + 3 < 10 || dateTimeEnd.getHours() + 3 > 19 || (dateTimeEnd.getHours() + 3 === 19 && dateTimeEnd.getMinutes() != 0)) {
-          agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
-          return;
-      }
-      const p=new Promise((resolve, reject) => {
-          calendar.events.list({
-            auth: auth,
-            calendarId: calendarId,
-          //   timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart).toISOString(),
-          //   timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart + 1).toISOString(),
-            timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
-            timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
-            singleEvents: true,
-            orderBy: 'startTime',
-            q: id
-          }, (err, calendarResponse) => {
-            if (err) {
-              console.error('Error retrieving events:', err);
-              reject(err);
-            } else {
-              const events = calendarResponse.data.items;
-              resolve(events);
-            }
-          });
-        });
-        return p.then(events => {
-            if (events.length === 0) {
-              return createCalendarEvent(dateTimeStart, dateTimeEnd, modifiedname, id, modifiedmail)
-              .then(() => {
-                  agent.add(`Ok, your appointment is now on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
-              })
-              .catch(() => {
-                  agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
-              });
-              }
-              else {
-                  agent.add("You already have an appointment scheduled for this day. Each student can only have one appointment per week. You can either choose another day or modify your existing appointment");
-              }
-          });
+    // function modifyfollowupAppointment(agent) {
+    //   const id = agent.parameters.ID;
+    //  //const dateTimeStart = toTimeZone(new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0])), timeZone);
+    //   const dateTimeStart = new Date(Date.parse(agent.parameters.date.split('T')[0] + 'T' + agent.parameters.time.split('T')[1].split('-')[0]));
+    //   dateTimeStart.setTime(dateTimeStart.getTime() - 1 * 60 * 60 * 1000);
+    //   //dateTimeStart.setHours(dateTimeStart.getHours+1);
+    //   console.log(dateTimeStart)
+    //   const timeZone = 'Africa/Cairo'; // Set your desired time zone
+    //   //const agentParameters = agent.parameters;
+    //   //const dateTimeStart = parseDateTime(agentParameters.date.split('T')[0], agentParameters.time.split('T')[1].split('-')[0]);
+    //   const durationInMinutes = parseInt(agent.parameters.Duration);
+    //   const startHour = dateTimeStart.getHours();
+    //   const startMinute = dateTimeStart.getMinutes();
+    //   // const startHour = dateTimeStart.hour;
+    //   // const startMinute = dateTimeStart.minute;
+    //   let endHour = startHour;
+    //   let endMinute = startMinute + durationInMinutes;
+    //   console.log('dur',durationInMinutes,'enhour',endHour,'endmin',endMinute,'startmin',startMinute);
+    //   if (endMinute >= 60) {
+    //       endHour += Math.floor(endMinute / 60);
+    //       endMinute %= 60;
+    //   }
+    //   const dateTimeEnd = new Date(dateTimeStart);
+    //   dateTimeEnd.setHours(endHour, endMinute);
+    //   const appointmentTimeString = dateTimeStart.toLocaleString(
+    //       'en-US',
+    //       { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: timeZone }
+    //   );
+    //   console.log(dateTimeStart.getDay());
+    //   if (dateTimeStart.getDay() !== 0) {
+    //       agent.add("Appointments can only be scheduled on Sundays, between 10 am and 7 pm. Please enter another date and time");
+    //       return;
+    //   }
+    //   if (startHour + 3 < 10 || dateTimeEnd.getHours() + 3 > 19 || (dateTimeEnd.getHours() + 3 === 19 && dateTimeEnd.getMinutes() != 0)) {
+    //       agent.add("Appointments can only be scheduled between 10 am and 7 pm on Sundays. Please enter another time");
+    //       return;
+    //   }
+    //   const p=new Promise((resolve, reject) => {
+    //       calendar.events.list({
+    //         auth: auth,
+    //         calendarId: calendarId,
+    //       //   timeMin: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart).toISOString(),
+    //       //   timeMax: new Date(dateTimeStart.year, dateTimeStart.month, dateTimeStart + 1).toISOString(),
+    //         timeMin: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate()).toISOString(),
+    //         timeMax: new Date(dateTimeStart.getFullYear(), dateTimeStart.getMonth(), dateTimeStart.getDate() + 1).toISOString(),
+    //         singleEvents: true,
+    //         orderBy: 'startTime',
+    //         q: id
+    //       }, (err, calendarResponse) => {
+    //         if (err) {
+    //           console.error('Error retrieving events:', err);
+    //           reject(err);
+    //         } else {
+    //           const events = calendarResponse.data.items;
+    //           resolve(events);
+    //         }
+    //       });
+    //     });
+    //     return p.then(events => {
+    //         if (events.length === 0) {
+    //           return createCalendarEvent(dateTimeStart, dateTimeEnd, modifiedname, id, modifiedmail)
+    //           .then(() => {
+    //               agent.add(`Ok, your appointment is now on ${appointmentTimeString} You have ${durationInMinutes} minutes!`);
+    //           })
+    //           .catch(() => {
+    //               agent.add(`I'm sorry, the requested time conflicts with another appointment. Please enter another time`);
+    //           });
+    //           }
+    //           else {
+    //               agent.add("You already have an appointment scheduled for this day. Each student can only have one appointment per week. You can either choose another day or modify your existing appointment");
+    //           }
+    //       });
     
-      }
+    //   }
 function createCalendarEvent (dateTimeStart, dateTimeEnd, name, id,mail) {
  console.log (name, id,mail)
  console.log (dateTimeStart, dateTimeEnd)
@@ -404,7 +406,7 @@ function deleteAndadd(agent){
                   agent.add(`You have no appointments to modify`);
                   resolve(); // Resolve here since there are no appointments to modify
               } else {
-                  const firstEvent = events[0];
+                   firstEvent = events[0];
                    modifiedname = firstEvent.summary.split("'s Appointment")[0];
                    modifiedmail = firstEvent.description.split(', mail: ')[1];
                   const deletedEventDate = new Date(firstEvent.start.dateTime).toLocaleString(
@@ -426,7 +428,6 @@ function deleteAndadd(agent){
                       endHour += Math.floor(endMinute / 60);
                       endMinute %= 60;
                   }
-
                   const dateTimeEnd = new Date(dateTimeStart);
                   dateTimeEnd.setHours(endHour, endMinute);
                   const appointmentTimeString = dateTimeStart.toLocaleString(
@@ -543,7 +544,7 @@ function getCalendarEvents(startDate, endDate) {
   intentMap.set('inquire',showAvailableSlots)
   //intentMap.set('Modify Appointment',modifyAppointment)
   intentMap.set('Modify Appointment - custom - custom',deleteAndadd)
-  intentMap.set('Modify Appointment - custom - custom - custom', modifyfollowupAppointment)
+ // intentMap.set('Modify Appointment - custom - custom - custom', modifyfollowupAppointment)
   agent.handleRequest(intentMap);
 
   
